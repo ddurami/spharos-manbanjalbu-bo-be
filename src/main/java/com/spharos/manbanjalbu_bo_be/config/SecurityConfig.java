@@ -24,7 +24,7 @@ public class SecurityConfig {
 				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/api/health").permitAll()
+						.requestMatchers("/api/health", "/api/admin/auth/login").permitAll()
 						.anyRequest().authenticated()
 				)
 				.httpBasic(Customizer.withDefaults());
@@ -44,5 +44,4 @@ public class SecurityConfig {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
-
 }

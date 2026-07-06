@@ -4,8 +4,8 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL:jdbc:mysql:}
-    username: ${DB_USERNAME:}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/starbucks7th?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul}
+    username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:}
 
   jpa:
@@ -18,13 +18,8 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
 
-  security:
-    user:
-      name: ${SECURITY_USERNAME:admin}
-      password: ${SECURITY_PASSWORD:admin}
-
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT:8081}
 
 logging:
   level:
