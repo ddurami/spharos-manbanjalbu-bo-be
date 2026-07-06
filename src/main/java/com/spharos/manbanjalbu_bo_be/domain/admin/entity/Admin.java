@@ -58,7 +58,6 @@ public class Admin {
 	@Builder
 	public Admin(Member member, AdminRole role, AdminStatus adminStatus) {
 		this.member = member;
-		this.memberId = member.getId();
 		this.role = role;
 		this.adminStatus = adminStatus;
 	}
