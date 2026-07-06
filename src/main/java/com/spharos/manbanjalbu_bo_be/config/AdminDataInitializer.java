@@ -40,7 +40,16 @@ public class AdminDataInitializer implements CommandLineRunner {
 	@Override
 	@Transactional
 	public void run(String... args) {
-		AdminRole superAdminRole = adminRoleRepository.findByRoleName(SUPER_ADMIN_ROLE)
+		AdminRole superAdminRole = ensureSuperAdminRole();
+
+		memberRepository.findByLoginId(ADMIN_LOGIN_ID).ifPresentOrElse(
+				member -> linkAdminIfMissing(member, superAdminRole),
+				() -> createFullAdminSeed(superAdminRole)
+		);
+	}
+
+	private AdminRole ensureSuperAdminRole() {
+		return adminRoleRepository.findByRoleName(SUPER_ADMIN_ROLE)
 				.orElseGet(() -> adminRoleRepository.save(AdminRole.builder()
 						.roleName(SUPER_ADMIN_ROLE)
 						.description("전체 권한 슈퍼 관리자")
@@ -49,12 +58,22 @@ public class AdminDataInitializer implements CommandLineRunner {
 						.canManageOrder(true)
 						.canManageSystem(true)
 						.build()));
+	}
 
-		if (memberRepository.existsByLoginId(ADMIN_LOGIN_ID)) {
+	private void linkAdminIfMissing(Member member, AdminRole superAdminRole) {
+		if (adminRepository.existsById(member.getId())) {
 			log.info("관리자 시드 데이터가 이미 존재합니다. (loginId={})", ADMIN_LOGIN_ID);
 			return;
 		}
+		adminRepository.save(Admin.builder()
+				.member(member)
+				.role(superAdminRole)
+				.adminStatus(AdminStatus.ACTIVE)
+				.build());
+		log.info("기존 member에 admin row 연결 완료 (loginId={})", ADMIN_LOGIN_ID);
+	}
 
+	private void createFullAdminSeed(AdminRole superAdminRole) {
 		Member adminMember = memberRepository.save(Member.builder()
 				.loginId(ADMIN_LOGIN_ID)
 				.password(passwordEncoder.encode(ADMIN_PASSWORD))

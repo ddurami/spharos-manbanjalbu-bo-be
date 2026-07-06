@@ -69,7 +69,6 @@ public class MemberProfile {
 			boolean marketingSmsAgreed
 	) {
 		this.member = member;
-		this.memberId = member.getId();
 		this.name = name;
 		this.nickname = nickname;
 		this.email = email;

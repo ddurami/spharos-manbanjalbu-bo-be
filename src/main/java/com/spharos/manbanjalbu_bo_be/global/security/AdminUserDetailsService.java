@@ -26,7 +26,7 @@ public class AdminUserDetailsService implements UserDetailsService {
 		Member member = memberRepository.findByLoginId(loginId)
 				.orElseThrow(() -> new UsernameNotFoundException("관리자 계정을 찾을 수 없습니다: " + loginId));
 
-		Admin admin = adminRepository.findById(member.getId())
+		Admin admin = adminRepository.findWithDetailsByMemberId(member.getId())
 				.orElseThrow(() -> new UsernameNotFoundException("관리자 권한이 없습니다: " + loginId));
 
 		if (admin.getAdminStatus() != AdminStatus.ACTIVE) {
