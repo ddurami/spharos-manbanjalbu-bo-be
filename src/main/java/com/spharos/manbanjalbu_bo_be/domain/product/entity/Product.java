@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -68,6 +69,15 @@ public class Product {
 	@Column(nullable = false, length = 20)
 	private ProductStatus status;
 
+	@Column(name = "is_deleted", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
+	private boolean deleted;
+
+	@Column(name = "status_change_reason", columnDefinition = "TEXT")
+	private String statusChangeReason;
+
+	@Column(name = "status_changed_by_admin_id")
+	private Long statusChangedByAdminId;
+
 	@CreationTimestamp
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private LocalDateTime createdAt;
@@ -75,4 +85,50 @@ public class Product {
 	@UpdateTimestamp
 	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
+
+	@Builder
+	public Product(
+			Category category,
+			ProductPolicy policy,
+			String name,
+			String shortDescription,
+			int price,
+			ProductSaleType saleType,
+			Season season,
+			ProductCapacity capacity,
+			boolean best,
+			boolean isNew,
+			ProductStatus status
+	) {
+		this.category = category;
+		this.policy = policy;
+		this.name = name;
+		this.shortDescription = shortDescription;
+		this.price = price;
+		this.saleType = saleType;
+		this.season = season;
+		this.capacity = capacity;
+		this.best = best;
+		this.isNew = isNew;
+		this.status = status;
+		this.deleted = false;
+	}
+
+	public void markSoldOut(String reason, Long adminId) {
+		this.status = ProductStatus.SOLD_OUT;
+		this.statusChangeReason = reason;
+		this.statusChangedByAdminId = adminId;
+	}
+
+	public void stopSelling(String reason, Long adminId) {
+		this.status = ProductStatus.HIDDEN;
+		this.statusChangeReason = reason;
+		this.statusChangedByAdminId = adminId;
+	}
+
+	public void softDelete(String reason, Long adminId) {
+		this.deleted = true;
+		this.statusChangeReason = reason;
+		this.statusChangedByAdminId = adminId;
+	}
 }

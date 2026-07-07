@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -51,4 +52,21 @@ public class ProductMedia {
 	@CreationTimestamp
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private LocalDateTime createdAt;
+
+	@Builder
+	public ProductMedia(
+			Product product,
+			ProductMediaType mediaType,
+			String mediaUrl,
+			String originalName,
+			Integer displayOrder,
+			boolean main
+	) {
+		this.product = product;
+		this.mediaType = mediaType;
+		this.mediaUrl = mediaUrl;
+		this.originalName = originalName;
+		this.displayOrder = displayOrder;
+		this.main = main;
+	}
 }
