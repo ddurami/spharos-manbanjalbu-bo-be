@@ -36,6 +36,7 @@ public class SecurityConfig {
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/api/health", "/api/admin/auth/login").permitAll()
+						.requestMatchers("/uploads/**").permitAll()
 						.requestMatchers(
 								"/swagger-ui.html",
 								"/swagger-ui/**",

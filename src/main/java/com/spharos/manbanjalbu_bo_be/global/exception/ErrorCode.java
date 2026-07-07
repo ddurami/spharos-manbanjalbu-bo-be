@@ -15,7 +15,11 @@ public enum ErrorCode {
 	PRODUCT_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "이미 삭제된 상품입니다."),
 	CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "카테고리를 찾을 수 없습니다."),
 	PRODUCT_POLICY_NOT_FOUND(HttpStatus.NOT_FOUND, "상품 정책을 찾을 수 없습니다."),
-	SEASON_NOT_FOUND(HttpStatus.NOT_FOUND, "시즌 정보를 찾을 수 없습니다.");
+	SEASON_NOT_FOUND(HttpStatus.NOT_FOUND, "시즌 정보를 찾을 수 없습니다."),
+	FILE_EMPTY(HttpStatus.BAD_REQUEST, "업로드할 파일이 없습니다."),
+	FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, "파일 크기가 허용 범위를 초과했습니다."),
+	INVALID_FILE_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 파일 형식입니다."),
+	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
 
 	private final HttpStatus status;
 	private final String message;
