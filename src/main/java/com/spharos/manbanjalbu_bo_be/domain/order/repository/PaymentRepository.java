@@ -36,4 +36,16 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 			@Param("start") LocalDateTime start,
 			@Param("end") LocalDateTime end
 	);
+
+	@Query("""
+			SELECT COALESCE(SUM(p.amount), 0)
+			FROM Payment p
+			JOIN p.order o
+			WHERE o.member.id = :memberId
+			  AND p.status = :status
+			""")
+	long sumAmountByMemberIdAndStatus(
+			@Param("memberId") Long memberId,
+			@Param("status") PaymentStatus status
+	);
 }

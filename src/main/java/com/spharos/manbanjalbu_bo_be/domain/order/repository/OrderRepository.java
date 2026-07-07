@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Orders, Long> {
 
@@ -19,4 +20,6 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
 			@Param("start") LocalDateTime start,
 			@Param("end") LocalDateTime end
 	);
+
+	List<Orders> findTop5ByMember_IdOrderByOrderAtDesc(Long memberId);
 }

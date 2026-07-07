@@ -69,4 +69,20 @@ public class Member {
 		this.status = status;
 		this.warningCount = warningCount;
 	}
+
+	public void suspend() {
+		this.status = MemberStatus.SUSPENDED;
+	}
+
+	public void withdraw() {
+		this.status = MemberStatus.WITHDRAWN;
+	}
+
+	public boolean isSuspended() {
+		return this.status == MemberStatus.SUSPENDED;
+	}
+
+	public boolean isWithdrawn() {
+		return this.status == MemberStatus.WITHDRAWN;
+	}
 }
