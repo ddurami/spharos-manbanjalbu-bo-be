@@ -75,7 +75,7 @@ public class FileStorageService {
 			throw new BusinessException(ErrorCode.FILE_UPLOAD_FAILED);
 		}
 
-		String publicPath = "/uploads/" + category.directory() + "/" + storedName;
+		String publicPath = "/" + category.directory() + "/" + storedName;
 		String url = trimTrailingSlash(uploadProperties.getPublicUrlPrefix()) + publicPath;
 
 		return new StoredFile(
