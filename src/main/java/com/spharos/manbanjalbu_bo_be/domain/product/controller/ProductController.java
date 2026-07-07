@@ -8,6 +8,7 @@ import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductPolicyResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductReasonRequest;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductUpdateRequest;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductSummaryResponse;
+import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductUpdateRequest;
 import com.spharos.manbanjalbu_bo_be.domain.product.entity.ProductStatus;
 import com.spharos.manbanjalbu_bo_be.domain.product.service.ProductManagementService;
 import com.spharos.manbanjalbu_bo_be.global.common.ApiResponse;
