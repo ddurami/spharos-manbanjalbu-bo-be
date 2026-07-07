@@ -11,4 +11,6 @@ public interface ProductMediaRepository extends JpaRepository<ProductMedia, Long
 	List<ProductMedia> findByProduct_IdOrderByDisplayOrderAscIdAsc(Long productId);
 
 	List<ProductMedia> findByProduct_IdInAndMediaType(List<Long> productIds, ProductMediaType mediaType);
+
+	void deleteByProduct_Id(Long productId);
 }

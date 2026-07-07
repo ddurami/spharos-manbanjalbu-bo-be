@@ -12,6 +12,7 @@ import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductListItem;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductMediaResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductPolicyResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductSummaryResponse;
+import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductUpdateRequest;
 import com.spharos.manbanjalbu_bo_be.domain.product.entity.Category;
 import com.spharos.manbanjalbu_bo_be.domain.product.entity.Product;
 import com.spharos.manbanjalbu_bo_be.domain.product.entity.ProductMedia;
@@ -168,17 +169,9 @@ public class ProductManagementService {
 
 	@Transactional
 	public ProductDetailResponse createProduct(ProductCreateRequest request) {
-		Category category = categoryRepository.findById(request.categoryId())
-				.orElseThrow(() -> new BusinessException(ErrorCode.CATEGORY_NOT_FOUND));
-		ProductPolicy policy = productPolicyRepository.findById(request.policyId())
-				.orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_POLICY_NOT_FOUND));
-
-		Season season = null;
-		if (request.seasonId() != null) {
-			season = seasonRepository.findById(request.seasonId())
-					.orElseThrow(() -> new BusinessException(ErrorCode.SEASON_NOT_FOUND));
-		}
-
+		Category category = findCategory(request.categoryId());
+		ProductPolicy policy = findPolicy(request.policyId());
+		Season season = findSeason(request.seasonId());
 		ProductStatus status = request.status() != null ? request.status() : ProductStatus.ON_SALE;
 
 		Product product = Product.builder()
@@ -195,45 +188,37 @@ public class ProductManagementService {
 				.status(status)
 				.build();
 		Product saved = productRepository.save(product);
-
-		List<ProductMedia> mediaList = new ArrayList<>();
-		mediaList.add(ProductMedia.builder()
-				.product(saved)
-				.mediaType(ProductMediaType.THUMBNAIL)
-				.mediaUrl(request.thumbnailUrl())
-				.displayOrder(0)
-				.main(true)
-				.build());
-
-		if (request.detailImageUrls() != null) {
-			int order = 1;
-			for (String url : request.detailImageUrls()) {
-				if (url == null || url.isBlank()) {
-					continue;
-				}
-				mediaList.add(ProductMedia.builder()
-						.product(saved)
-						.mediaType(ProductMediaType.DETAIL_IMAGE)
-						.mediaUrl(url)
-						.displayOrder(order++)
-						.main(false)
-						.build());
-			}
-		}
-
-		if (request.detailHtml() != null && !request.detailHtml().isBlank()) {
-			mediaList.add(ProductMedia.builder()
-					.product(saved)
-					.mediaType(ProductMediaType.DETAIL_HTML)
-					.mediaUrl(request.detailHtml())
-					.displayOrder(0)
-					.main(false)
-					.build());
-		}
-
-		productMediaRepository.saveAll(mediaList);
+		saveProductMedia(saved, request.thumbnailUrl(), request.detailImageUrls(), request.detailHtml());
 
 		return getProductDetail(saved.getId());
+	}
+
+	@Transactional
+	public ProductDetailResponse updateProduct(Long productId, ProductUpdateRequest request) {
+		Product product = getActiveProduct(productId);
+		Category category = findCategory(request.categoryId());
+		ProductPolicy policy = findPolicy(request.policyId());
+		Season season = findSeason(request.seasonId());
+		ProductStatus status = request.status() != null ? request.status() : product.getStatus();
+
+		product.updateInfo(
+				category,
+				policy,
+				request.name(),
+				request.shortDescription(),
+				request.price(),
+				request.saleType(),
+				season,
+				request.capacity(),
+				request.best(),
+				request.isNew(),
+				status
+		);
+
+		productMediaRepository.deleteByProduct_Id(productId);
+		saveProductMedia(product, request.thumbnailUrl(), request.detailImageUrls(), request.detailHtml());
+
+		return getProductDetail(productId);
 	}
 
 	@Transactional
@@ -353,5 +338,67 @@ public class ProductManagementService {
 
 	private String emptyToNull(String value) {
 		return (value == null || value.isBlank()) ? null : value;
+	}
+
+	private Category findCategory(Long categoryId) {
+		return categoryRepository.findById(categoryId)
+				.orElseThrow(() -> new BusinessException(ErrorCode.CATEGORY_NOT_FOUND));
+	}
+
+	private ProductPolicy findPolicy(Long policyId) {
+		return productPolicyRepository.findById(policyId)
+				.orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_POLICY_NOT_FOUND));
+	}
+
+	private Season findSeason(Long seasonId) {
+		if (seasonId == null) {
+			return null;
+		}
+		return seasonRepository.findById(seasonId)
+				.orElseThrow(() -> new BusinessException(ErrorCode.SEASON_NOT_FOUND));
+	}
+
+	private void saveProductMedia(
+			Product product,
+			String thumbnailUrl,
+			List<String> detailImageUrls,
+			String detailHtml
+	) {
+		List<ProductMedia> mediaList = new ArrayList<>();
+		mediaList.add(ProductMedia.builder()
+				.product(product)
+				.mediaType(ProductMediaType.THUMBNAIL)
+				.mediaUrl(thumbnailUrl)
+				.displayOrder(0)
+				.main(true)
+				.build());
+
+		if (detailImageUrls != null) {
+			int order = 1;
+			for (String url : detailImageUrls) {
+				if (url == null || url.isBlank()) {
+					continue;
+				}
+				mediaList.add(ProductMedia.builder()
+						.product(product)
+						.mediaType(ProductMediaType.DETAIL_IMAGE)
+						.mediaUrl(url)
+						.displayOrder(order++)
+						.main(false)
+						.build());
+			}
+		}
+
+		if (detailHtml != null && !detailHtml.isBlank()) {
+			mediaList.add(ProductMedia.builder()
+					.product(product)
+					.mediaType(ProductMediaType.DETAIL_HTML)
+					.mediaUrl(detailHtml)
+					.displayOrder(0)
+					.main(false)
+					.build());
+		}
+
+		productMediaRepository.saveAll(mediaList);
 	}
 }

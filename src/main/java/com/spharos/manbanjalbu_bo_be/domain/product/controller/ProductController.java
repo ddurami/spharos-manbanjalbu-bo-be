@@ -6,6 +6,7 @@ import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductDetailResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductListItem;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductPolicyResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductReasonRequest;
+import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductUpdateRequest;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductSummaryResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.entity.ProductStatus;
 import com.spharos.manbanjalbu_bo_be.domain.product.service.ProductManagementService;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,6 +78,15 @@ public class ProductController {
 	) {
 		ProductDetailResponse created = productManagementService.createProduct(request);
 		return ResponseEntity.ok(ApiResponse.ok(created));
+	}
+
+	@PutMapping("/{productId}")
+	public ResponseEntity<ApiResponse<ProductDetailResponse>> updateProduct(
+			@PathVariable Long productId,
+			@Valid @RequestBody ProductUpdateRequest request
+	) {
+		ProductDetailResponse updated = productManagementService.updateProduct(productId, request);
+		return ResponseEntity.ok(ApiResponse.ok(updated));
 	}
 
 	@PostMapping("/{productId}/sold-out")

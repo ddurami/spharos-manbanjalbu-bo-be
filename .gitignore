@@ -44,6 +44,9 @@ Thumbs.db
 logs/
 *.log
 
+### Uploads ###
+uploads/
+
 ### Environment ###
 .env
 .env.*
