@@ -74,7 +74,7 @@ public class DashboardService {
 
 	private List<DashboardShortcut> buildShortcuts() {
 		return List.of(
-				new DashboardShortcut("MEMBER_SEARCH", "회원검색", "/members"),
+				new DashboardShortcut("MEMBER_SEARCH", "회원검색", "/members/search"),
 				new DashboardShortcut("PRODUCT_CREATE", "상품등록", "/products/new"),
 				new DashboardShortcut("NOTICE", "공지사항", "/notices"),
 				new DashboardShortcut("SEARCH_KEYWORD", "검색어 등록", "/search-keywords")

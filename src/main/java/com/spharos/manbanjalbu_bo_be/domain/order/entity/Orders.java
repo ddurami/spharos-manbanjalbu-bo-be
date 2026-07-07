@@ -98,4 +98,41 @@ public class Orders {
 	@UpdateTimestamp
 	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
+
+	public static Orders createForSeed(
+			Member member,
+			MemberAddress memberAddress,
+			String orderNo,
+			String orderName,
+			OrderStatus orderStatus,
+			OrderType orderType,
+			int amount,
+			int deliveryFee,
+			int orderAmount,
+			String recipientName,
+			String recipientPhone,
+			String recipientZipcode,
+			String recipientBaseAddress,
+			String recipientDetailAddress,
+			LocalDateTime orderAt
+	) {
+		Orders order = new Orders();
+		order.member = member;
+		order.memberAddress = memberAddress;
+		order.orderNo = orderNo;
+		order.orderName = orderName;
+		order.orderStatus = orderStatus;
+		order.orderType = orderType;
+		order.orderCategory = OrderCategory.GENERAL;
+		order.amount = amount;
+		order.deliveryFee = deliveryFee;
+		order.orderAmount = orderAmount;
+		order.recipientName = recipientName;
+		order.recipientPhone = recipientPhone;
+		order.recipientZipcode = recipientZipcode;
+		order.recipientBaseAddress = recipientBaseAddress;
+		order.recipientDetailAddress = recipientDetailAddress;
+		order.orderAt = orderAt;
+		return order;
+	}
 }

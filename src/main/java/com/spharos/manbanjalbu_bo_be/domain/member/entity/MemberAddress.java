@@ -65,4 +65,30 @@ public class MemberAddress {
 	@UpdateTimestamp
 	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
+
+	public static MemberAddress create(
+			Member member,
+			String addressName,
+			String recipientName,
+			String zipcode,
+			String baseAddress,
+			String detailAddress,
+			String phone1,
+			String phone2,
+			String deliveryMemo,
+			boolean isDefault
+	) {
+		MemberAddress address = new MemberAddress();
+		address.member = member;
+		address.addressName = addressName != null && !addressName.isBlank() ? addressName : "기본 배송지";
+		address.recipientName = recipientName;
+		address.zipcode = zipcode;
+		address.baseAddress = baseAddress;
+		address.detailAddress = detailAddress;
+		address.phone1 = phone1;
+		address.phone2 = phone2;
+		address.deliveryMemo = deliveryMemo;
+		address.isDefault = isDefault;
+		return address;
+	}
 }
