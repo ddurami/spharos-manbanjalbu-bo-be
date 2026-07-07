@@ -131,4 +131,30 @@ public class Product {
 		this.statusChangeReason = reason;
 		this.statusChangedByAdminId = adminId;
 	}
+
+	public void updateInfo(
+			Category category,
+			ProductPolicy policy,
+			String name,
+			String shortDescription,
+			int price,
+			ProductSaleType saleType,
+			Season season,
+			ProductCapacity capacity,
+			boolean best,
+			boolean isNew,
+			ProductStatus status
+	) {
+		this.category = category;
+		this.policy = policy;
+		this.name = name;
+		this.shortDescription = shortDescription;
+		this.price = price;
+		this.saleType = saleType;
+		this.season = season;
+		this.capacity = capacity;
+		this.best = best;
+		this.isNew = isNew;
+		this.status = status;
+	}
 }
