@@ -12,6 +12,7 @@ import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductListItem;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductMediaResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductPolicyResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductSummaryResponse;
+import com.spharos.manbanjalbu_bo_be.domain.product.dto.SeasonResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductUpdateRequest;
 import com.spharos.manbanjalbu_bo_be.domain.product.entity.Category;
 import com.spharos.manbanjalbu_bo_be.domain.product.entity.Product;
@@ -253,6 +254,13 @@ public class ProductManagementService {
 	public List<ProductPolicyResponse> getPolicies() {
 		return productPolicyRepository.findAllByOrderByIdAsc().stream()
 				.map(ProductPolicyResponse::from)
+				.toList();
+	}
+
+	@Transactional(readOnly = true)
+	public List<SeasonResponse> getSeasons() {
+		return seasonRepository.findAllByOrderByIdAsc().stream()
+				.map(SeasonResponse::from)
 				.toList();
 	}
 

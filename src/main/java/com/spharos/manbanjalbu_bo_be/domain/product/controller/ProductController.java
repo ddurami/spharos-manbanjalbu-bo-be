@@ -6,9 +6,9 @@ import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductDetailResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductListItem;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductPolicyResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductReasonRequest;
-import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductUpdateRequest;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductSummaryResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.dto.ProductUpdateRequest;
+import com.spharos.manbanjalbu_bo_be.domain.product.dto.SeasonResponse;
 import com.spharos.manbanjalbu_bo_be.domain.product.entity.ProductStatus;
 import com.spharos.manbanjalbu_bo_be.domain.product.service.ProductManagementService;
 import com.spharos.manbanjalbu_bo_be.global.common.ApiResponse;
@@ -134,6 +134,11 @@ public class ProductController {
 	@GetMapping("/policies")
 	public ResponseEntity<ApiResponse<List<ProductPolicyResponse>>> getPolicies() {
 		return ResponseEntity.ok(ApiResponse.ok(productManagementService.getPolicies()));
+	}
+
+	@GetMapping("/seasons")
+	public ResponseEntity<ApiResponse<List<SeasonResponse>>> getSeasons() {
+		return ResponseEntity.ok(ApiResponse.ok(productManagementService.getSeasons()));
 	}
 
 	private String getClientIp(HttpServletRequest request) {
