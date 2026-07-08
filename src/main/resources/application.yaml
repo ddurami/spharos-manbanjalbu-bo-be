@@ -5,22 +5,23 @@ spring:
   application:
     name: manbanjalbu-bo-be
 
+  datasource:
+    # 3307 포트의 localhost로 지정하여 터널을 타도록 합니다.
+    url: jdbc:mysql://localhost:3308/manbanjalbu
+    username: admin
+    password: manbanjalbu
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: ${DB_URL:jdbc:mysql://192.168.10.214:3306/starbucks7th?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
+#    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/starbucks7th?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
 #    username: ${DB_USERNAME:root}
-#    password: ${DB_PASSWORD:root1234}
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/starbucks7th?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:1234}
+#    password: ${DB_PASSWORD:1234}
 
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: ${JPA_DDL_AUTO:update}
+      ddl-auto: ${JPA_DDL_AUTO:validate}
     show-sql: ${JPA_SHOW_SQL:true}
     properties:
       hibernate:
